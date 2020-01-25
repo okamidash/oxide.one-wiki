@@ -2,7 +2,7 @@
 title: Filesystem Layout
 description: Design Brief for filesystem layout
 published: true
-date: 2020-01-25T12:15:38.888Z
+date: 2020-01-25T12:17:51.472Z
 tags: Virtual Machine, Physical Machine, fs
 ---
 
@@ -26,11 +26,9 @@ The pattern followed for network storage is as follows:
 
 Where `type` is the method of storage, abbreviated to 3 letters. It is good practice to keep the first character unique, so that tab completion is easier.
 
-- Network FIle System (NFS): `/storage/net/nfs`
-
+- Network File System (NFS): `/storage/net/nfs`
 - Gluster FS: `/storage/net/gfs`
-
-- Ceph Storage: `/storage/net/cep`
+- Ceph Storage: `/storage/net/ceph`
 
 `host` relates to where the storage is kept. For a NFS based storage exported on the host 'blackbird' the directory would be `/storage/net/nfs/blackbird/`
 
@@ -53,12 +51,10 @@ The pattern for local storage is as follows:
 Where `type` is the type of storage. The naming convention for the type of storage is as follows.
 
 - ZFS based Raid array: `ember`
-
 - SSD based Storage: `flame`
-
 - NVME based Storage: `blaze`
-  
-  This is to allow for clear identification of the type of storage, and it's relative speed. (it also looks cool)
+
+This is to allow for clear identification of the type of storage, and it's relative speed. (it also looks cool)
 
 `volume` relates to the name of the volume. For a ZFS filesystem with a volume exported as `glusterstore` the path would be as follows: `/storage/loc/zfs/ember/glusterstore`
 
