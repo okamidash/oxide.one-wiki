@@ -2,7 +2,7 @@
 title: OS Tweaks
 description: Operating system level tweaks and setup
 published: true
-date: 2020-01-25T17:37:20.069Z
+date: 2020-01-25T17:39:15.517Z
 tags: OS, Fedora, Virtual Machine, Physical Machine
 ---
 
@@ -95,3 +95,76 @@ For LDAP to work, please install the following packages.
 ```shell
 dnf install -y freeipa-client autoconfig
 ```
+
+# Users and Privileges
+
+## Root Account
+
+The root account is disabled.
+
+## okami
+
+okami is the default user setup for all systems. Every VM and Physical host should have this user existing by way of FreeIPA (LDAP).
+
+They belong in the following groups (if they exist):
+
+- docker
+
+- wheel
+
+- libvirt
+
+## Sudo
+
+Users in the wheel group shall have passwordless sudo enabled. This can be achieved with the following line.
+
+`%wheel ALL=(ALL) NOPASSWD: ALL`
+
+The following settings shall also be set in the sudoers file.
+
+```
+ Defaults env_keep += "LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET" Defaults env_keep += "HOME" Defaults env_keep += "XAPPLRESDIR XFILESEARCHPATH XUSERFILESEARCHPATH" Defaults env_keep += "QTDIR KDEDIR" Defaults env_keep += "XDG_SESSION_COOKIE"
+```
+
+## SSH
+
+SSH is the primary method of accessing any system across the estate.
+
+Password authentication is not allowed anywhere.
+
+`PasswordAuthentication no`
+
+## LDAP
+
+LDAP Through FreeIPA is to be setup and configured for each client on the network. This is to allow for easy user management across systems. This is setup using the FreeIPA ansible roles; and the home dir shall be set on creation.
+
+# Misc
+
+## MOTD
+
+Physical hosts should have a MOTD setup using a script. Currently they should use the script provided by [this repo](https://github.com/okamidash/motdshell)
+
+For the script to run properly; place the script in `/usr/local/bin/dynmotd`
+
+Then append the following line onto /etc/profile:
+
+`/usr/local/bin/dynmotd`
+
+## Cron
+
+Cron is used to handle backing up of virtual machines.
+
+Enable and start Cron with
+
+```shell
+systemctl enable --now crond.service
+```
+
+Then add the following line to `/etc/anacrontab`
+
+```shell
+@daily  25 backup-machines /usr/local/bin/backupscript.sh
+```
+
+Then grab the backupscript.sh file from [this repo](https://github.com/okamidash/motdshell) and place it in /usr/local/bin/
+
