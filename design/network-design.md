@@ -2,11 +2,11 @@
 title: Network Design
 description: The Network Design within Oxide.one
 published: true
-date: 2020-02-07T17:36:55.028Z
+date: 2020-02-07T17:37:19.849Z
 tags: Network
 ---
 
-
+![untitled_diagram.jpg](/untitled_diagram.jpg)
 
 Network Design
 ---
