@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="2500"
-   height="1000"
-   viewBox="0 0 661.45832 264.58334"
+   width="480.29001"
+   height="545.94983"
+   viewBox="0 0 127.07673 144.44923"
    version="1.1"
    id="svg4628"
    inkscape:version="0.92.4 5da689c313, 2019-01-14"
@@ -26,34 +26,34 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="756.91022"
-     inkscape:cy="496.99872"
+     inkscape:cx="-491.51621"
+     inkscape:cy="127.11649"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      units="px"
-     inkscape:window-width="1256"
-     inkscape:window-height="460"
-     inkscape:window-x="2575"
-     inkscape:window-y="478"
+     inkscape:window-width="2526"
+     inkscape:window-height="1387"
+     inkscape:window-x="15"
+     inkscape:window-y="15"
      inkscape:window-maximized="0">
     <sodipodi:guide
-       position="0,0"
+       position="-267.19081,-97.864675"
        orientation="0,2500"
        id="guide4648"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="661.45834,0"
+       position="394.26754,-97.864675"
        orientation="-1000,0"
        id="guide4650"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="661.45834,264.58333"
+       position="394.26754,166.71866"
        orientation="0,-2500"
        id="guide4652"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="0,264.58333"
+       position="-267.19081,166.71866"
        orientation="1000,0"
        id="guide4654"
        inkscape:locked="false" />
@@ -74,7 +74,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-32.41665)">
+     transform="translate(-267.1908,-54.686085)">
     <g
        transform="translate(129.87612,20.741153)"
        id="g4620">
@@ -86,12 +86,12 @@
            cx="200.98669"
            cy="114.98943"
            r="61.204723"
-           style="fill:none;stroke:#f2f2f2;stroke-width:4.4000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;fill-opacity:1" />
+           style="fill:none;fill-opacity:1;stroke:#f2f2f2;stroke-width:4.4000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
         <g
-           style="stroke:#222222;stroke-opacity:1;fill:none;fill-opacity:1"
+           style="fill:none;fill-opacity:1;stroke:#222222;stroke-opacity:1"
            id="g4572">
           <circle
-             style="fill:none;stroke:#f2f2f2;stroke-width:4.4000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;fill-opacity:1"
+             style="fill:none;fill-opacity:1;stroke:#f2f2f2;stroke-width:4.4000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
              r="61.204723"
              cy="97.349655"
              cx="200.71941"
@@ -103,9 +103,9 @@
          id="text4569"
          y="119.0959"
          x="203.71394"
-         style="font-style:normal;font-weight:normal;font-size:52.48989868px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#f2f2f2;fill-opacity:1;stroke:none;stroke-width:1.31224728;"
+         style="font-style:normal;font-weight:normal;font-size:52.48989868px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#f2f2f2;fill-opacity:1;stroke:none;stroke-width:1.31224728"
          xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0;font-family:Montserrat;-inkscape-font-specification:Montserrat;text-align:center;letter-spacing:-2.46480632px;text-anchor:middle;fill:#f2f2f2;fill-opacity:1;stroke-width:1.31224728;"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0;font-family:Montserrat;-inkscape-font-specification:Montserrat;text-align:center;letter-spacing:-2.46480632px;text-anchor:middle;fill:#f2f2f2;fill-opacity:1;stroke-width:1.31224728"
            y="119.0959"
            x="202.48154"
            id="tspan4567"
