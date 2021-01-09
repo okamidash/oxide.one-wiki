@@ -1,0 +1,14 @@
+<!--
+title: Migration spec
+description: 
+published: true
+date: 2021-01-09T00:09:19.793Z
+tags: 
+editor: ckeditor
+dateCreated: 2021-01-09T00:09:19.793Z
+-->
+
+<h1>About</h1>
+<p>This document aims to discuss and highlight some current issues with okami.dev, and then to serve as an overview for how I would like okami.dev to be built, in a native manner.</p>
+<h2>The Modus Operandi</h2>
+<p>When a user connects to okami.dev, they connect through a caddy proxy to ttyd. This then spawns a docker container, and ttyd will then spawn a shell within the container, which is served as an xterm.js based webpage.</p>
