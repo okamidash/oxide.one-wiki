@@ -1,0 +1,26 @@
+<!--
+title: Goddamm FreeIPA refusing to update
+description: 
+published: true
+date: 2021-02-06T23:33:01.479Z
+tags: 
+editor: ckeditor
+dateCreated: 2021-02-06T23:33:01.479Z
+-->
+
+<p>You can use ACME.sh for freeipa if you dare.</p>
+<p>Download the certs first</p>
+<pre><code class="language-plaintext">CERTS=("isrgrootx1.pem" "isrg-root-x2.pem" "lets-encrypt-r3.pem" "lets-encrypt-e1.pem" "lets-encrypt-r4.pem" "lets-encrypt-e2.pem") 
+for CERT in "${CERTS[@]}" 
+	do 
+	if command -v wget &amp;&gt; /dev/null 
+	then
+		wget -O "/etc/ssl/$FQDN/$CERT" "https://letsencrypt.org/certs/$CERT" 
+	elif command -v curl &amp;&gt; /dev/null 
+	then 
+		curl -o "/etc/ssl/$FQDN/$CERT" "https://letsencrypt.org/certs/$CERT" 
+	fi 
+	ipa-cacert-manage install "/etc/ssl/$FQDN/$CERT" 
+done</code></pre>
+<p>Then you can provision your acme certs</p>
+<pre><code class="language-plaintext">sudo ipa-server-certinstall -w -d ~/.acme.sh/`hostname`/`hostname`.key ~/.acme.sh/`hostname`/`hostname`.cer --dirman-password='PASSWORD' --pin=''</code></pre>
