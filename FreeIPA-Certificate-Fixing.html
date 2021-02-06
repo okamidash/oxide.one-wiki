@@ -2,7 +2,7 @@
 title: Goddamm FreeIPA refusing to update
 description: 
 published: true
-date: 2021-02-06T23:33:01.479Z
+date: 2021-02-06T23:34:23.121Z
 tags: 
 editor: ckeditor
 dateCreated: 2021-02-06T23:33:01.479Z
@@ -23,4 +23,11 @@ for CERT in "${CERTS[@]}"
 	ipa-cacert-manage install "/etc/ssl/$FQDN/$CERT" 
 done</code></pre>
 <p>Then you can provision your acme certs</p>
-<pre><code class="language-plaintext">sudo ipa-server-certinstall -w -d ~/.acme.sh/`hostname`/`hostname`.key ~/.acme.sh/`hostname`/`hostname`.cer --dirman-password='PASSWORD' --pin=''</code></pre>
+<pre><code class="language-plaintext">sudo ipa-server-certinstall -w -d \ 
+	~/.acme.sh/`hostname`/`hostname`.key \ 
+	~/.acme.sh/`hostname`/`hostname`.cer \ 
+	--dirman-password='PASSWORD' --pin=''</code></pre>
+<p>If your certificate is already expired, Set your date to a date that is <i>before</i> the expiry date.</p>
+<pre><code class="language-plaintext">date --set=20200102 23:59</code></pre>
+<p>Will set it to January 02, 23:59.</p>
+<p>&nbsp;</p>
