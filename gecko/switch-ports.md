@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-27T19:39:25.173Z
+date: 2021-07-27T20:10:26.269Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
