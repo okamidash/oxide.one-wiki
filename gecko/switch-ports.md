@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-27T16:32:27.308Z
+date: 2021-07-27T19:39:12.813Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -24,7 +24,7 @@ DHCP name: cs-luna
 | Port Group 	| Ports 			| Network 			| vlan 	|
 | -						| -						|	-							| -		 	|
 | core				| 1,2,3,17-24 | 10.0.1.0/26 	| 10		|
-| management	| 9-16				| 10.0.1.126/26 |	11		|
+| management	| 9-16				| 10.0.1.128/26 |	11		|
 | out					| 4-8					| 10.0.0.0/24		| 12		|
 
 ## Networks
