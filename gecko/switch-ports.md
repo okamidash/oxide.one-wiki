@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T08:25:10.753Z
+date: 2021-07-28T09:26:15.467Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -25,7 +25,7 @@ DHCP name: cs-luna
 | -						| -						|	-							| -		 	|
 | core				| 1-8 				| 10.0.1.0/25 	| 10		|
 | management	| 17-24				| 10.0.1.128/26 |	11		|
-| out					| 8-12				| 10.0.0.0/24		| 12		|
+| out					| 9-12				| 10.0.0.0/24		| 12		|
 | untagged 		| 13-16				| none					| none	|
 
 ## Networks
@@ -35,7 +35,47 @@ DHCP name: cs-luna
 | management 			| 10.0.1.128			| 26 		| 11 			| 10.0.1.129 - 10.0.1.190 	| 10.0.1.140-10.0.1.190 | 10.0.1.129 	|	
 | out							| 10.0.0.0				| 24		| 12			| 10.0.0.1-10.0.0.250				| 10.0.0.50-10.0.0.250	| 10.0.0.1	|
 
-# Data
-Ports
+# Commands
 
-Your content here
+## Set MTU
+```
+/interface
+set [/interface find interface=all] mtu=9000 l2mtu=9100
+```
+## Add LACP bridge
+```
+/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 mode=802.3ad lacp-rate=30secs link-monitoring=mii name=uplink mtu=9000
+```
+## Bridge settings
+```
+/interface bridge add name=mainline vlan-filtering=no
+/interface bridge port add bridge=mainline interface=uplink
+
+# Add the interface lists
+/interface list add name=core comment="Core Network. 10.0.1.0/25 VLAN 10"
+/interface list add name=management comment="Management Network. 10.0.1.128/26 VLAN 11"
+/interface list add name=out comment="Outer Network. 10.0.0.0/24 VLAN 12"
+/interface list add name=untag comment="Untagged Network. No vlan"
+
+# Add the interfaces
+:for i from=1 to=8 do={:local iname "ether$i"; /interface list member add list=core interface=$iname}
+:for i from=17 to=24 do={:local iname "ether$i"; /interface list member add list=management interface=$iname}
+:for i from=9 to=12 do={:local iname "ether$i"; /interface list member add list=out interface=$iname}
+:for i from=13 to=16 do={:local iname "ether$i"; /interface list member add list=untag interface=$iname}
+
+# Add the bridge links
+/interface bridge port add bridge=mainline interface=core pvid=10
+/interface bridge port add bridge=mainline interface=management pvid=11
+/interface bridge port add bridge=mainline interface=out pvid=12
+/interface bridge port add bridge=mainline interface=untag
+
+# Add bridge vlan entries
+/interface bridge vlan add bridge=mainline tagged=core untagged=uplink vlan-ids=10
+# Core network
+:for i from=1 to=8 do={:local iname "ether$i"; /interface bridge vlan add bridge=mainline tagged=uplink untagged=$iname vlan-ids=10}
+# Management network
+:for i from=17 to=24 do={:local iname "ether$i"; /interface bridge vlan add bridge=mainline tagged=uplink untagged=$iname vlan-ids=11}
+# Outer network
+:for i from=9 to=12 do={:local iname "ether$i"; /interface bridge vlan add bridge=mainline tagged=uplink untagged=$iname vlan-ids=12}
+
+
