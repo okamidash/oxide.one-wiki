@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T09:26:15.467Z
+date: 2021-07-28T10:43:40.953Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -71,11 +71,24 @@ set [/interface find interface=all] mtu=9000 l2mtu=9100
 
 # Add bridge vlan entries
 /interface bridge vlan add bridge=mainline tagged=core untagged=uplink vlan-ids=10
-# Core network
-:for i from=1 to=8 do={:local iname "ether$i"; /interface bridge vlan add bridge=mainline tagged=uplink untagged=$iname vlan-ids=10}
-# Management network
-:for i from=17 to=24 do={:local iname "ether$i"; /interface bridge vlan add bridge=mainline tagged=uplink untagged=$iname vlan-ids=11}
-# Outer network
-:for i from=9 to=12 do={:local iname "ether$i"; /interface bridge vlan add bridge=mainline tagged=uplink untagged=$iname vlan-ids=12}
+
+# Grab the core network list
+:global corenets ""; :foreach interface in=[/interface list member print as-value where list=core] do={:set $corenets ($corenets . "," . ($interface->"interface")) }; :set corenets [:pick $corenets 1 ([:len $corenets])];
+
+# Grab the Management network list
+:global mgmtnets ""; :foreach interface in=[/interface list member print as-value where list=management] do={:set $mgmtnets ($mgmtnets . "," . ($interface->"interface")) }; :set mgmtnets [:pick $mgmtnets 1 ([:len $mgmtnets])];
+
+# Grab the Out network list
+:global outnets ""; :foreach interface in=[/interface list member print as-value where list=out] do={:set $outnets ($outnets . "," . ($interface->"interface")) }; :set outnets [:pick $outnets 1 ([:len $outnets])];
+
+# Set the Core network Vlan Tagging
+/interface bridge vlan add bridge=mainline tagged=uplink untagged=$corenets vlan-ids=10
+
+# Set the Management network Vlan tagging
+/interface bridge vlan add bridge=mainline tagged=uplink untagged=$mgmtnets vlan-ids=11
+
+# Set the Outward network Vlan tagging
+/interface bridge vlan add bridge=mainline tagged=uplink untagged=$outnets vlan-ids=12
+
 
 
