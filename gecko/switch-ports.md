@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T14:20:48.625Z
+date: 2021-07-28T14:38:29.557Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -61,12 +61,12 @@ Create a link between both switches so that they can effectively talk to each ot
 
 **Luna**
 ```
-/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 name=crosslink comment="Crosslink between Luna and Celestia"
+/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 name=crosslink comment="Crosslink between Luna and Celestia" mode=802.3ad
 /ip address add address=172.16.0.1/24 interface=crosslink
 ```
 **Celestia**
 ```
-/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 name=crosslink comment="Crosslink between Luna and Celestia"
+/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 name=crosslink comment="Crosslink between Luna and Celestia" mode=802.3ad 
 /ip address add address=172.16.0.2/24 interface=crosslink
 ```
 
@@ -86,31 +86,35 @@ Create the Interface lists
 /interface list add name=out comment="Outer Network. 10.0.0.0/24 VLAN 12"
 /interface list add name=untag comment="Untagged Network. No vlan"
 ```
-
+Then, add the interfaces to the lists.
+**Luna**
+```
+:for i from=1 to=8 do={:local iname "ether$i"; /interface list member add list=core interface=$iname}
+:for i from=17 to=24 do={:local iname "ether$i"; /interface list member add list=management interface=$iname}
+:for i from=9 to=12 do={:local iname "ether$i"; /interface list member add list=out interface=$iname}
+:for i from=13 to=16 do={:local iname "ether$i"; /interface list member add list=untag interface=$iname}
+```
+**Celestia**
+```
+:for i from=3 to=24 do={:local iname "ether$i"; /interface list member add list=core interface=$iname}
+```
 ## 5. Mainline Bridge
 **Both**
 ```
 /interface bridge add name=mainline vlan-filtering=no
 /interface bridge port add bridge=mainline interface=crosslink
 ```
-
-
-# Commands - core-switch-luna (10.0.1.131)
-## Bridge settings
+Then add the interface lists to the bridge.
+**Both**
 ```
-
-# Add the interfaces
-:for i from=1 to=8 do={:local iname "ether$i"; /interface list member add list=core interface=$iname}
-:for i from=17 to=24 do={:local iname "ether$i"; /interface list member add list=management interface=$iname}
-:for i from=9 to=12 do={:local iname "ether$i"; /interface list member add list=out interface=$iname}
-:for i from=13 to=16 do={:local iname "ether$i"; /interface list member add list=untag interface=$iname}
-
-# Add the bridge links
 /interface bridge port add bridge=mainline interface=core pvid=10
 /interface bridge port add bridge=mainline interface=management pvid=11
 /interface bridge port add bridge=mainline interface=out pvid=12
 /interface bridge port add bridge=mainline interface=untag
-
+```
+# Commands - core-switch-luna (10.0.1.131)
+## Bridge settings
+```
 # Add bridge vlan entries
 /interface bridge vlan add bridge=mainline tagged=core untagged=uplink vlan-ids=10
 
