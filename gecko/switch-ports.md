@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T16:59:34.254Z
+date: 2021-07-28T17:09:42.927Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -147,9 +147,9 @@ Finally, add a DHCP IP for the ports
 It's necessary to set the bridge to to VLAN tagging.
 **Luna**
 ```
-/interface bridge vlan add bridge=mainline tagged=crosslink vlan-ids=10
-/interface bridge vlan add bridge=mainline tagged=crosslink vlan-ids=11
-/interface bridge vlan add bridge=mainline tagged=crosslink vlan-ids=12
+/interface bridge vlan add bridge=mainline tagged=mainline,crosslink vlan-ids=10
+/interface bridge vlan add bridge=mainline tagged=mainline,crosslink vlan-ids=11
+/interface bridge vlan add bridge=mainline tagged=mainline,crosslink vlan-ids=12
 ```
 **Celestia**
 ```
