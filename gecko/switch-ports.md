@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T15:04:07.118Z
+date: 2021-07-28T15:39:19.220Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -114,9 +114,14 @@ Then add the interface lists to the bridge.
 ```
 Then add a vlan bridge interface to the bridge.
 ```
-/interface vlan add interface=mainline name=sw-core vlan-id=10
-/interface vlan add interface=mainline name=sw-management vlan-id=11
-/interface vlan add interface=mainline name=sw-out vlan-id=12
+/interface vlan add interface=mainline name=sw-core vlan-id=10 mtu=9000 l2mtu=9100
+/interface vlan add interface=mainline name=sw-management vlan-id=11 mtu=9000 l2mtu=9100
+/interface vlan add interface=mainline name=sw-out vlan-id=12 mtu=9000 l2mtu=9100
+
+/interface vlan add interface=crosslink name=cr-core vlan-id=10 mtu=9000
+/interface vlan add interface=crosslink name=cr-management vlan-id=11 mtu=9000 
+/interface vlan add interface=crosslink name=cr-out vlan-id=12 mtu=9000
+
 ```
 Finally, add a DHCP IP for the ports
 ```
