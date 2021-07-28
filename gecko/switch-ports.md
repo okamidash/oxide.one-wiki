@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T16:06:10.310Z
+date: 2021-07-28T16:55:32.100Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -94,11 +94,16 @@ Then, add the interfaces to the lists.
 :for i from=9 to=12 do={:local iname "ether$i"; /interface list member add list=out interface=$iname}
 :for i from=13 to=16 do={:local iname "ether$i"; /interface list member add list=untag interface=$iname}
 ```
+
 **Celestia**
 ```
+/interface list add name=qsfp-1 comment="qsfp one"
+/interface list add name=qsfp-2 comment="qsfp two"
 :for i from=3 to=24 do={:local iname "sfp-sfpplus$i"; /interface list member add list=core interface=$iname}
-
+:for i from=1 to=4 do={:local iname "qsfpplus1-$i"; /interface list member add list=qsfp-1 interface=$iname}
+:for i from=1 to=4 do={:local iname "qsfpplus2-$i"; /interface list member add list=qsfp-2 interface=$iname}
 ```
+
 ## 5. Mainline Bridge
 **Both**
 ```
@@ -106,7 +111,7 @@ Then, add the interfaces to the lists.
 ```
 **Luna**
 ```
-/interface bridge port add bridge=mainline interface=crosslink
+/interface bridge port add bridge=mainline frame-types=admit-only-vlan-tagged ingress-filtering=yes interface=crosslink
 ```
 **Celestia**
 ```
@@ -120,15 +125,17 @@ Then add the interface lists to the bridge.
 /interface bridge port add bridge=mainline interface=out pvid=12 ingress-filtering=yes
 /interface bridge port add bridge=mainline interface=untag ingress-filtering=yes
 ```
+**Celestia**
+```
+/interface bridge port add bridge=mainline interface=qsfp-1 ingress-filtering=yes
+/interface bridge port add bridge=mainline interface=qsfp-2 ingress-filtering=yes
+```
+
 Then add a vlan bridge interface to the bridge.
 ```
-/interface vlan add interface=mainline name=sw-core vlan-id=10 mtu=9000 l2mtu=9100
-/interface vlan add interface=mainline name=sw-management vlan-id=11 mtu=9000 l2mtu=9100
-/interface vlan add interface=mainline name=sw-out vlan-id=12 mtu=9000 l2mtu=9100
-
-/interface vlan add interface=crosslink name=cr-core vlan-id=10 mtu=9000
-/interface vlan add interface=crosslink name=cr-management vlan-id=11 mtu=9000 
-/interface vlan add interface=crosslink name=cr-out vlan-id=12 mtu=9000
+add interface=mainline mtu=9000 name=sw-core vlan-id=10
+add interface=mainline mtu=9000 name=sw-management vlan-id=11
+add interface=mainline mtu=9000 name=sw-out vlan-id=12
 
 ```
 Finally, add a DHCP IP for the ports
@@ -140,43 +147,23 @@ Finally, add a DHCP IP for the ports
 It's necessary to set the bridge to to VLAN tagging.
 **Luna**
 ```
-# Core Networks
-:local corenets ""; :foreach interface in=[/interface list member print as-value where list=core] do={:set $corenets ($corenets . "," . ($interface->"interface")) }; :set corenets [:pick $corenets 1 ([:len $corenets])]; /interface bridge vlan add bridge=mainline tagged=crosslink untagged=$corenets vlan-ids=10
-# Management Networks
-:local mgmtnets ""; :foreach interface in=[/interface list member print as-value where list=management] do={:set $mgmtnets ($mgmtnets . "," . ($interface->"interface")) }; :set mgmtnets [:pick $mgmtnets 1 ([:len $mgmtnets])]; /interface bridge vlan add bridge=mainline tagged=crosslink untagged=$mgmtnets vlan-ids=11
-# Out Network
-:local outnets ""; :foreach interface in=[/interface list member print as-value where list=out] do={:set $outnets ($outnets . "," . ($interface->"interface")) }; :set outnets [:pick $outnets 1 ([:len $outnets])]; /interface bridge vlan add bridge=mainline tagged=crosslink untagged=$outnets vlan-ids=12
-```
-### Alt
-**Luna**
-```
 /interface bridge vlan add bridge=mainline tagged=crosslink vlan-ids=10
 /interface bridge vlan add bridge=mainline tagged=crosslink vlan-ids=11
 /interface bridge vlan add bridge=mainline tagged=crosslink vlan-ids=12
 ```
 **Celestia**
 ```
-/interface bridge vlan add bridge=mainline tagged=qsfpplus1-1 untagged=$corenets vlan-ids=10
-/interface bridge vlan add bridge=mainline tagged=qsfpplus1-1 untagged=$mgmtnets vlan-ids=11
-/interface bridge vlan add bridge=mainline tagged=qsfpplus1-1 untagged=$outnets vlan-ids=12
+/interface bridge vlan add bridge=mainline tagged=qsfpplus1-1,crosslink,mainline vlan-ids=10
+/interface bridge vlan add bridge=mainline tagged=qsfpplus1-1,crosslink,mainline vlan-ids=11
+/interface bridge vlan add bridge=mainline tagged=qsfpplus1-1,crosslink,mainline vlan-ids=12
 ```
-**Celestia**
-```
-# Core Networks
-:local corenets ""; :foreach interface in=[/interface list member print as-value where list=core] do={:set $corenets ($corenets . "," . ($interface->"interface")) }; :set corenets [:pick $corenets 1 ([:len $corenets])]; /interface bridge vlan add bridge=mainline tagged=qsfpplus1-1 untagged=$corenets vlan-ids=10
-# Management Networks
-:local mgmtnets ""; :foreach interface in=[/interface list member print as-value where list=management] do={:set $mgmtnets ($mgmtnets . "," . ($interface->"interface")) }; :set mgmtnets [:pick $mgmtnets 1 ([:len $mgmtnets])]; /interface bridge vlan add bridge=mainline tagged=qsfpplus1-1 untagged=$mgmtnets vlan-ids=11
-# Out Network
-:local outnets ""; :foreach interface in=[/interface list member print as-value where list=out] do={:set $outnets ($outnets . "," . ($interface->"interface")) }; :set outnets [:pick $outnets 1 ([:len $outnets])]; /interface bridge vlan add bridge=mainline tagged=qsfpplus1-1 untagged=$outnets vlan-ids=12
-```
-
 ## 7. Enabling Filtering
 **Celestia**
 ```
-/interface bridge set mainline vlan-filtering=yes
+/interface bridge set mainline vlan-filtering=yes ingress-filtering=yes
 ```
 **Luna**
 ```
-/interface bridge set mainline vlan-filtering=yes
+/interface bridge set mainline vlan-filtering=yes ingress-filtering=yes
 ```
 
