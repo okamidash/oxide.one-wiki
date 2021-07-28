@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T11:37:02.982Z
+date: 2021-07-28T11:39:31.976Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -35,7 +35,7 @@ DHCP name: cs-luna
 | management 			| 10.0.1.128			| 26 		| 11 			| 10.0.1.129 - 10.0.1.190 	| 10.0.1.140-10.0.1.190 | 10.0.1.129 	|	
 | out							| 10.0.0.0				| 24		| 12			| 10.0.0.1-10.0.0.250				| 10.0.0.50-10.0.0.250	| 10.0.0.1	|
 
-# Commands - core-switch-luna
+# Commands - core-switch-luna (10.0.1.131)
 # Set the system identity
 `/system identity set name=core-switch-luna`
 ## Set MTU
@@ -94,8 +94,8 @@ DHCP name: cs-luna
 /system identity set name=core-switch-luna
 
 ```
-# Commands - core-switch-celestia
+# Commands - core-switch-celestia (10.0.1.130)
 ## Set MTU
 `/interface set [/interface find interface=all] mtu=9000 l2mtu=9100`
 ## Set System identity
-`/system identity set name=core-switch-luna`
+`/system identity set name=core-switch-celestia`
