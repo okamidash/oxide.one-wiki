@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T11:39:31.976Z
+date: 2021-07-28T11:53:08.957Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -19,7 +19,7 @@ DHCP name: cs-celestia
 ## Switch 2 - Bottom of Top of rack (SFP+) | luna
 DHCP name: cs-luna
 
-### Port mappings
+### Port mappings (luna)
 
 | Port Group 	| Ports 			| Network 			| vlan 	|
 | -						| -						|	-							| -		 	|
@@ -27,6 +27,15 @@ DHCP name: cs-luna
 | management	| 17-24				| 10.0.1.128/26 |	11		|
 | out					| 9-12				| 10.0.0.0/24		| 12		|
 | untagged 		| 13-16				| none					| none	|
+
+### Port mappings (celestia)
+
+| Port Group 	| Ports 			| Network 			| vlan 	|
+| -						| -						|	-							| -		 	|
+| core				| 3-24 				| 10.0.1.0/25 	| 10		|
+| management	| 17-24				| 10.0.1.128/26 |	11		|
+| out					| 9-12				| 10.0.0.0/24		| 12		|
+| untagged 		| 1-2				| none					| none	|
 
 ## Networks
 |BNetwork Name 		| Network address | Cidr 	| Vlan ID |  Usable hosts 						| DHCP range 						| Gateway | 
