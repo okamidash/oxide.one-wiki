@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T13:46:23.182Z
+date: 2021-07-28T14:20:48.625Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -46,42 +46,58 @@ DHCP name: cs-luna
 
 # First-Boot Setup
 This section describes the first time setup for both Luna and Celestia, for their respective switches.
-## Hostname setup
-Luna
+## 1. Hostname setup
+Set the identities of both switches
+**Luna**
 ```
 /system identity set name=core-switch-luna
 ```
-Celestia
+**Celestia**
 ```
 /system identity set name=core-switch-celestia
 ```
-## Bonding bridge
-Luna
+## 2. Crosslink bridge
+Create a link between both switches so that they can effectively talk to each other.
+
+**Luna**
 ```
 /interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 name=crosslink comment="Crosslink between Luna and Celestia"
-/ip address add address=172.16.0.1/24 interface=bond1
+/ip address add address=172.16.0.1/24 interface=crosslink
 ```
-Celestia
+**Celestia**
 ```
-/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 name=crosslink
+/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 name=crosslink comment="Crosslink between Luna and Celestia"
 /ip address add address=172.16.0.2/24 interface=crosslink
 ```
 
-# Commands - core-switch-luna (10.0.1.131)
-## Set MTU
-`/interface set [/interface find interface=all] mtu=9000 l2mtu=9100`
-## Add LACP bridge
-`/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 mode=802.3ad lacp-rate=30secs link-monitoring=mii name=uplink mtu=9000`
-## Bridge settings
+## 3. MTU
+Set the MTU to 9000 for all the interfaces, because speed.
+**Both**
 ```
-/interface bridge add name=mainline vlan-filtering=no
-/interface bridge port add bridge=mainline interface=uplink
+/interface set [/interface find interface=all] mtu=9000 l2mtu=9100
+```
 
-# Add the interface lists
+## 4. Interface Lists
+Create the Interface lists
+**Both**
+```
 /interface list add name=core comment="Core Network. 10.0.1.0/25 VLAN 10"
 /interface list add name=management comment="Management Network. 10.0.1.128/26 VLAN 11"
 /interface list add name=out comment="Outer Network. 10.0.0.0/24 VLAN 12"
 /interface list add name=untag comment="Untagged Network. No vlan"
+```
+
+## 5. Mainline Bridge
+**Both**
+```
+/interface bridge add name=mainline vlan-filtering=no
+/interface bridge port add bridge=mainline interface=crosslink
+```
+
+
+# Commands - core-switch-luna (10.0.1.131)
+## Bridge settings
+```
 
 # Add the interfaces
 :for i from=1 to=8 do={:local iname "ether$i"; /interface list member add list=core interface=$iname}
