@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T15:39:19.220Z
+date: 2021-07-28T16:06:10.310Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -97,20 +97,28 @@ Then, add the interfaces to the lists.
 **Celestia**
 ```
 :for i from=3 to=24 do={:local iname "sfp-sfpplus$i"; /interface list member add list=core interface=$iname}
+
 ```
 ## 5. Mainline Bridge
 **Both**
 ```
 /interface bridge add name=mainline vlan-filtering=no
+```
+**Luna**
+```
 /interface bridge port add bridge=mainline interface=crosslink
+```
+**Celestia**
+```
+/interface bridge port add bridge=mainline interface=crosslink frame-types=admit-only-vlan-tagged
 ```
 Then add the interface lists to the bridge.
 **Both**
 ```
-/interface bridge port add bridge=mainline interface=core pvid=10
-/interface bridge port add bridge=mainline interface=management pvid=11
-/interface bridge port add bridge=mainline interface=out pvid=12
-/interface bridge port add bridge=mainline interface=untag
+/interface bridge port add bridge=mainline interface=core pvid=10 ingress-filtering=yes
+/interface bridge port add bridge=mainline interface=management pvid=11 ingress-filtering=yes
+/interface bridge port add bridge=mainline interface=out pvid=12 ingress-filtering=yes
+/interface bridge port add bridge=mainline interface=untag ingress-filtering=yes
 ```
 Then add a vlan bridge interface to the bridge.
 ```
