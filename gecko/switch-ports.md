@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T11:53:08.957Z
+date: 2021-07-28T13:46:23.182Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -44,9 +44,30 @@ DHCP name: cs-luna
 | management 			| 10.0.1.128			| 26 		| 11 			| 10.0.1.129 - 10.0.1.190 	| 10.0.1.140-10.0.1.190 | 10.0.1.129 	|	
 | out							| 10.0.0.0				| 24		| 12			| 10.0.0.1-10.0.0.250				| 10.0.0.50-10.0.0.250	| 10.0.0.1	|
 
+# First-Boot Setup
+This section describes the first time setup for both Luna and Celestia, for their respective switches.
+## Hostname setup
+Luna
+```
+/system identity set name=core-switch-luna
+```
+Celestia
+```
+/system identity set name=core-switch-celestia
+```
+## Bonding bridge
+Luna
+```
+/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 name=crosslink comment="Crosslink between Luna and Celestia"
+/ip address add address=172.16.0.1/24 interface=bond1
+```
+Celestia
+```
+/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 name=crosslink
+/ip address add address=172.16.0.2/24 interface=crosslink
+```
+
 # Commands - core-switch-luna (10.0.1.131)
-# Set the system identity
-`/system identity set name=core-switch-luna`
 ## Set MTU
 `/interface set [/interface find interface=all] mtu=9000 l2mtu=9100`
 ## Add LACP bridge
@@ -102,9 +123,34 @@ DHCP name: cs-luna
 # Set the system identity
 /system identity set name=core-switch-luna
 
+# Enable filtering
+/interface bridge set mainline vlan-filtering=yes
 ```
 # Commands - core-switch-celestia (10.0.1.130)
 ## Set MTU
-`/interface set [/interface find interface=all] mtu=9000 l2mtu=9100`
+```
+/interface set [/interface find interface=all] mtu=9000 l2mtu=9100
+```
 ## Set System identity
-`/system identity set name=core-switch-celestia`
+```
+/system identity set name=core-switch-celestia
+```
+## Add bridge Interface
+```
+/interface bridge add name=mainline vlan-filtering=no
+```
+## Add Listening address
+```
+/interface vlan add interface=mainline name=MGMT vlan-id=11
+/ip address add address=10.0.1.130/26 interface=MGMT
+```
+
+## Add Core network list
+```
+:for i from=3 to=24 do={:local iname "sfp-sfpplus$i"; /interface list member add list=core interface=$iname}
+```
+## Add Interface list to Bridge
+```
+/interface bridge vlan add bridge=mainline tagged=core untagged=uplink vlan-ids=10
+```
+
