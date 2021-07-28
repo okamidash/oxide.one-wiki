@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T10:43:40.953Z
+date: 2021-07-28T11:37:02.982Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -35,17 +35,13 @@ DHCP name: cs-luna
 | management 			| 10.0.1.128			| 26 		| 11 			| 10.0.1.129 - 10.0.1.190 	| 10.0.1.140-10.0.1.190 | 10.0.1.129 	|	
 | out							| 10.0.0.0				| 24		| 12			| 10.0.0.1-10.0.0.250				| 10.0.0.50-10.0.0.250	| 10.0.0.1	|
 
-# Commands
-
+# Commands - core-switch-luna
+# Set the system identity
+`/system identity set name=core-switch-luna`
 ## Set MTU
-```
-/interface
-set [/interface find interface=all] mtu=9000 l2mtu=9100
-```
+`/interface set [/interface find interface=all] mtu=9000 l2mtu=9100`
 ## Add LACP bridge
-```
-/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 mode=802.3ad lacp-rate=30secs link-monitoring=mii name=uplink mtu=9000
-```
+`/interface bonding add slaves=sfp-sfpplus1,sfp-sfpplus2 mode=802.3ad lacp-rate=30secs link-monitoring=mii name=uplink mtu=9000`
 ## Bridge settings
 ```
 /interface bridge add name=mainline vlan-filtering=no
@@ -90,5 +86,16 @@ set [/interface find interface=all] mtu=9000 l2mtu=9100
 # Set the Outward network Vlan tagging
 /interface bridge vlan add bridge=mainline tagged=uplink untagged=$outnets vlan-ids=12
 
+# Add a management interface port and IP
+/interface vlan add interface=mainline name=MGMT vlan-id=11
+/ip address add address=10.0.1.131/26 interface=MGMT
 
+# Set the system identity
+/system identity set name=core-switch-luna
 
+```
+# Commands - core-switch-celestia
+## Set MTU
+`/interface set [/interface find interface=all] mtu=9000 l2mtu=9100`
+## Set System identity
+`/system identity set name=core-switch-luna`
