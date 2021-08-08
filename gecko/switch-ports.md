@@ -2,7 +2,7 @@
 title: Switch ports diagram
 description: The switching ports and their mappings
 published: true
-date: 2021-07-28T23:28:10.767Z
+date: 2021-08-08T13:10:44.154Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-27T12:59:36.075Z
@@ -35,13 +35,15 @@ DHCP name: cs-luna
 | core				| 3-24 				| 10.0.1.0/25 	| 10		|
 | management	| 17-24				| 10.0.1.128/26 |	11		|
 | out					| 9-12				| 10.0.0.0/24		| 12		|
+| hyper				| N/A					| 10.0.2.0/24 	| 14		|
 | untagged 		| 1-2				| none					| none	|
 
 ## Networks
 |BNetwork Name 		| Network address | Cidr 	| Vlan ID |  Usable hosts 						| DHCP range 						| Gateway | 
 | -								| -								|	-			|	-				|	-													| -		 			 						| -				| 
 | core						| 10.0.1.0				| 25		| 10			| 10.0.1.1 - 10.0.1.126 		| 10.0.1.20-10.0.1.126  | 10.0.1.1		|
-| management 			| 10.0.1.128			| 26 		| 11 			| 10.0.1.129 - 10.0.1.190 	| 10.0.1.140-10.0.1.190 | 10.0.1.129 	|	
+| management 			| 10.0.1.128			| 26 		| 11 			| 10.0.1.129 - 10.0.1.190 	| 10.0.1.140-10.0.1.190 | 10.0.1.129 	|
+| hyper						| 10.0.2.0				| 24		| 14			| 10.0.2.1-10.0.2.255 			|	NONE									| 10.0.2.1 		|
 | out							| 10.0.0.0				| 24		| 12			| 10.0.0.1-10.0.0.250				| 10.0.0.50-10.0.0.250	| 10.0.0.1	|
 
 # First-Boot Setup
