@@ -2,7 +2,7 @@
 title: Gecko
 description: 
 published: true
-date: 2021-07-04T23:15:05.880Z
+date: 2021-09-12T16:38:45.465Z
 tags: 
 editor: markdown
 dateCreated: 2021-07-04T23:15:05.880Z
@@ -10,7 +10,21 @@ dateCreated: 2021-07-04T23:15:05.880Z
 
 # Gecko, the next generation kubernetes cluster
 
+Network Name 	Network address 	Cidr 	Vlan ID 	Usable hosts 	DHCP range 	Gateway
+core 	10.0.1.0 	25 	10 	10.0.1.1 - 10.0.1.126 	10.0.1.20-10.0.1.126 	10.0.1.1
+management 	10.0.1.128 	26 	11 	10.0.1.129 - 10.0.1.190 	10.0.1.140-10.0.1.190 	10.0.1.129
+hyper 	10.0.2.0 	24 	14 	10.0.2.1-10.0.2.255 	NONE 	10.0.2.1
+out 	10.0.0.0 	24 	12 	10.0.0.1-10.0.0.250 	10.0.0.50-10.0.0.250 	10.0.0.1
+
 # Networks (under gb.oxide.one)
+## Networks
+|BNetwork Name 		| Network address | Cidr 	| Vlan ID |  Usable hosts 						| DHCP range 						| Gateway | 
+| -								| -								|	-			|	-				|	-													| -		 			 						| -				| 
+| core						| 10.0.1.0				| 25		| 10			| 10.0.1.1 - 10.0.1.126 		| 10.0.1.20-10.0.1.126  | 10.0.1.1		|
+| management 			| 10.0.1.128			| 26 		| 11 			| 10.0.1.129 - 10.0.1.190 	| 10.0.1.140-10.0.1.190 | 10.0.1.129 	|
+| hyper						| 10.0.2.0				| 24		| 14			| 10.0.2.1-10.0.2.255 			|	NONE									| 10.0.2.1 		|
+| out							| 10.0.0.0				| 24		| 12			| 10.0.0.1-10.0.0.250				| 10.0.0.50-10.0.0.250	| 10.0.0.1	|
+# First-Boot Setup
 | Name						| Network 	 | Start 			| End	 				| Cidr 		| Domain 						| VLAN | Total 	|
 | ---- 						| ---- 			 |-						|						 -| -				|	-			 						| -	   | - 		 	|			
 | overcloud		 		| 10.0.1.0 	 | 10.0.1.0		| 10.0.1.63 	| /26			| overcloud.infra 	| 2		 | 64		 	|
