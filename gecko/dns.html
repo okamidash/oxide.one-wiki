@@ -2,13 +2,50 @@
 title: DNS Design for Gecko
 description: DNS Design and hosts for Gecko.
 published: true
-date: 2021-10-16T10:30:47.377Z
+date: 2021-10-16T10:44:13.743Z
 tags: 
 editor: ckeditor
 dateCreated: 2021-10-16T10:30:47.377Z
 -->
 
+<h1>About</h1>
+<p>This document aims to clarify the naming scheme used in the Gecko project.</p>
 <h1>Naming scheme</h1>
 <p>Since physical hosts <i>cannot</i> be easily changed, they get assigned proper hostnames.</p>
 <p>Virtual hosts get assigned random hostnames.</p>
+<h1>Regional DNS Zones</h1>
+<p>Everything that provides infrastructure to gecko should be under <code>gecko.oxide.one</code></p>
+<p>Within that, the naming for the gecko project should be within regional zones.</p>
+<p>The currently available zones are:</p>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td>Region name</td>
+        <td>Country</td>
+        <td>Region code</td>
+        <td>Active?</td>
+      </tr>
+      <tr>
+        <td>Southampton</td>
+        <td>GB</td>
+        <td><code>sou</code></td>
+        <td>yes</td>
+      </tr>
+      <tr>
+        <td>London</td>
+        <td>GB</td>
+        <td><code>mmr</code></td>
+        <td>yes</td>
+      </tr>
+      <tr>
+        <td>Bern</td>
+        <td>CH</td>
+        <td><code>chb</code></td>
+        <td>no</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>Each zone is defined by a <i>tripcode. </i>A tripcode is essentially the location code.</p>
 <p>&nbsp;</p>
